@@ -1,0 +1,386 @@
+﻿@model SuperShopManagementMVCWebApp.ViewModels.EmloyeeFormViewModels
+@*@model SuperShopManagementMVCWebApp.Models.Employee*@
+@{
+    ViewBag.Title = "SaveNewEmployee";
+}
+
+<h2>Save NewEmployee</h2>
+<!Doctype html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+    <fieldset>
+        <form class="needs-validation" novalidate method="post">
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="employeeName">Employee Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="employeeName" placeholder="Employee Name" required>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter Employee Name.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="departmentIdDrown">Department</label>
+                    <div class="dropdown">
+
+                        <select class="form-control" id="departmentIdDropdown" name="SelectedDepartmentId">
+                        </select>
+                        <div id="departmentStatus"></div>
+                        <div class="invalid-tooltip"></div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="emloyeeRankId">Employee Rank</label>
+                    <div class="dropdown">
+
+                        <select class="form-control" id="emloyeeRankId" name="emloyeeRankId">
+                        </select>
+                        <div id="employeeRankStatus"></div>
+                        <div class="invalid-tooltip"></div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="col-md-12 mb-3">
+                    <label for="address">Address</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="address" placeholder="Address" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter Address.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="emailAddress">Email Address</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="emailAddress" placeholder="Email Adderess" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter Email Address.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="gender">Gender</label>
+                    <div class="input-group">
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" id="gender" value="Male" name="Gender">Male
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" id="gender" value="Female" name="Gender">Female
+                            </label>
+                        </div>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter GenderType.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-4">
+                    <label for="birthdate">Birthdate</label>
+                    <div class="input-group">
+                        <input type="datetime" class="form-control" name="Birthdate" id="birthdate" placeholder="Birthdate" required />
+
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter Birthdate.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="contactNumber">Contact Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="contactNumber" placeholder="Contact Number" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter Contact Number.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="nidNumber">NID Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="nidNumber" placeholder="NID Number" required>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please Enter NID Number.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <button class="btn btn-primary" id="saveEmployeetButton" type="submit">Save Employee</button>
+
+        </form>
+
+    </fieldset>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            populateDepartmentDropdown();
+
+        });
+        function populateDepartmentDropdown() {
+            var departmentDropdown = $("#departmentIdDropdown");
+            departmentDropdown.empty();
+            var departmentList = @Html.Raw(Json.Encode(Model.Departments));
+            $.each(departmentList, function () {
+                departmentDropdown.append($('<option/>',
+                    {
+                        value: this.Value,
+                        html: this.Text
+                    }
+                ));
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            populateEmployeeRankDropdown();
+
+        });
+        function populateEmployeeRankDropdown() {
+            var departmentDropdown = $("#emloyeeRankId");
+            departmentDropdown.empty();
+            var departmentList = @Html.Raw(Json.Encode(Model.EmployeeRanks));
+            $.each(departmentList, function () {
+                departmentDropdown.append($('<option/>',
+                    {
+                        value: this.Value,
+                        html: this.Text
+                    }
+                ));
+            });
+        }
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $.get('DepartmentList', function (data) {
+                    console.log(data)
+                    $.each(data, function (i,index, value) {
+                        console.log(text + value)
+                        //console.log(data[i].text)
+                        //console.log(data.Department.DepartmentName)
+
+                        $('<option>').val(value).text(value).appendTo("#departmentDropdownList");
+                    })
+                })
+            })
+        </script>*@
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        else {
+                            //$(document).ready(function () {
+                            //    $("#saveEmployeetButton").click(function () {
+                            //        var employee = new Object();
+
+                            //        employee.EmloyeeName = $("#employeeName").val().trim();
+                            //        employee.Address = $("#address").val().trim();
+                            //        employee.EmaiAddress = $("#emailAddress").val().trim();
+                            //        employee.Gender = $("#gender").val().trim();
+                            //        employee.Birthdate = $("#birthdate").val().trim();
+                            //        employee.ContactNumber = $("#contactNumber").val().trim();
+                            //        employee.NID_Number = $("#nidNumber").val().trim();
+
+
+                            //        $.ajax({
+                            //            url: "/Employee/SaveNewEmployee",
+                            //            method: "POST",
+                            //            contentType: "application/json; charset=utf-8",
+                            //            dataType: "json",
+                            //            data: JSON.stringify(employee),
+                            //            success: function (data) {
+                            //                alert(data);
+                            //            },
+                            //            error: function () {
+                            //                alert('failed');
+                            //            }
+                            //        });
+
+
+
+
+                            //    });
+
+                            //});
+
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    <script>
+        $(document).ready(function () {
+            //populateDepartmentDropdown();
+            $("#saveEmployeetButton").click(function () {
+                var employee = new Object();
+                employee.EmloyeeName = $("#employeeName").val().trim();
+                employee.DepartmentId = $("#departmentIdDropdown option:selected").val().trim();
+                employee.EmployeeRankId = $("#emloyeeRankId option:selected").val().trim();
+                //employee.DepartmentId = $("input[name='SelectedDepartmentIdinput']:selected").val().trim();
+                employee.Address = $("#address").val().trim();
+                employee.EmaiAddress = $("#emailAddress").val().trim();
+                //employee.Gender = $("#gender").val().trim();
+                employee.Gender = $("input[name='Gender']:checked").val().trim();
+                employee.Birthdate = $("#birthdate").val().trim();
+                employee.ContactNumber = $("#contactNumber").val().trim();
+                employee.NID_Number = $("#nidNumber").val().trim();
+
+
+                $.ajax({
+                    //url: "/Api/Employees/SaveNewEmployee",
+                    url: "/Employee/SaveNewEmployee",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(employee),
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert('failed');
+                    }
+                });
+
+
+
+
+            });
+
+        });
+        @*function populateDepartmentDropdown() {
+            var departmentDropdown = $("#departmentIdDropdown");
+            departmentDropdown.empty();
+            var departmentList = @Html.Raw(Json.Encode(Model.Departments));
+            $.each(departmentList, function () {
+                departmentDropdown.append($('<option/>',
+                    {
+                        value: this.Value,
+                        html: this.Text
+                    }
+                ));
+            });
+        }*@
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#birthdate').datetimepicker({
+                format: "DD/MM/YYYY"
+
+            }).on('dp.change', function (e) {
+
+                $(this).data('DateTimePicker').hide();
+            });
+
+        });
+
+    </script>
+
+}
+@*<script src="E:/Dot net project for Visual Studio/SuperShopManagementMVCWebApp/SuperShopManagementMVCWebApp/Views/js/SaveNewEmployee.js"></script>*@
+@*<script type="text/javascript">
+        $(function () {
+            $('#birthdate').datetimepicker({
+                format: "DD/MM/YYYY"
+            }).on('dp.change', function (e) {
+
+                $(this).data('DateTimePicker').hide();
+            });
+
+        });
+
+    </script>*@
+

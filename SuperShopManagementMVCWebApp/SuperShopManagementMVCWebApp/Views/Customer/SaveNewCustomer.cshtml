@@ -1,0 +1,77 @@
+﻿@model SuperShopManagementMVCWebApp.Models.Customer
+
+@{
+    ViewBag.Title = "SaveNewCustomer";
+}
+
+<h2>SaveNewCustomer</h2>
+<!Doctype html>
+<html>
+<head>
+
+</head>
+<body>
+    <form class="needs-validation" method="post" novalidate>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="customerName">Cusotmer Name</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="customerName" placeholder="Customer Name" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="customerAddress">Cusotmer Addess</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="customerAddress" placeholder="Cusotmer Addess" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="customerContactNumber">Contact Number</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="customerContactNumber" placeholder="Contact Number" required />
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" id="saveCustomerButton" type="submit">Save</button>
+    </form>
+</body>
+</html>
+
+@section scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+            $("#saveCustomerButton").click(function () {
+                var customer = new Object();
+                customer.CustomerName =$("#customerName").val().trim();
+                customer.CustomerAddress = $("#customerAddress").val().trim();
+                customer.CustomerContactNumber = $("#customerContactNumber").val().trim();
+
+                $.ajax({
+                    url: "/Customer/SaveNewCustomer",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(customer),
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert('failed');
+                    }
+                });
+
+            });
+
+
+        });
+
+
+    </script>
+}
+

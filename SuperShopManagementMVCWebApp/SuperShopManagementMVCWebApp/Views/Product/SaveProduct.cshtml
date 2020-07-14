@@ -1,0 +1,95 @@
+﻿@model SuperShopManagementMVCWebApp.Models.Product
+@{
+    ViewBag.Title = "SaveProduct";
+}
+
+<h2>SaveProduct</h2>
+
+<form class="needs-validation" novalidate>
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="productCode">Product Code</label>
+            <div class="input-group">
+                <input type="text" class="form-control is-valid" id="productCode" placeholder="Product Code" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-tooltip">
+                    Please enter Employee Name.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="productName">Product Name</label>
+            <div class="input-group">
+                <input type="text" class="form-control is-valid" id="productName" placeholder="Product Name" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-tooltip">
+                    Please enter Employee Name.
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" id="saveProductButton" type="submit">Save Employee</button>
+</form>
+@section scripts
+{
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#saveProductButton").click(function () {
+                var product = new Object();
+
+                product.ProcductCode = $("#productCode").val().trim();
+                product.ProductName = $("#productName").val().trim();
+               
+
+
+                $.ajax({
+                    url: "/Product/SaveProduct",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(product),
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert('failed');
+                    }
+                });
+
+
+
+
+            });
+
+        });
+    </script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

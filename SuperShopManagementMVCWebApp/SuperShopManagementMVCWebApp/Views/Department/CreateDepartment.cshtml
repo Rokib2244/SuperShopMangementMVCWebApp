@@ -1,0 +1,148 @@
+﻿@model SuperShopManagementMVCWebApp.Models.Department
+@{
+    //string msg = ViewBag.Message;
+    ViewBag.Title = "CreateDepartment";
+}
+
+@*<h2>CreateDepartment</h2>*@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<title>Index</title>*@
+    <style>
+        #departmentCodeError{
+                color:red;
+                font-style:italic;
+        }
+        #departmentNameError{
+                color:red;
+                font-style:italic;
+        }
+    </style>
+</head>
+<body>
+
+    <fieldset>
+        <legend>Create Department</legend>
+        <form class="needs-validation" novalidate method="post">
+            <div class="form-row">
+                <div class="col-md-12 mb-md-3">
+                    <label for="departmentCode">Department Code</label>
+                    <div class="input-group">
+                        <input type="text" name="DepartmentCode" class="form-control" id="departmentCode" placeholder="Department Code" required>
+                        <p id="departmentCodeError"></p>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please enter Department Code.
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-md-3">
+                    <label for="departmentName">Department Name</label>
+                    <div class="input-group">
+                        <input type="text" name="DepartmentName" class="form-control" id="departmentName" placeholder="Department Name" required>
+                        <p id="departmentNameError"></p>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                        <div class="invalid-tooltip">
+                            Please enter Department Name.
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" id="saveDepartmentButton" type="submit">Save DepartMent</button>
+
+            </div>
+
+        </form>
+    </fieldset>
+</body>
+</html>
+
+
+@section scripts
+{
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#departmentCode").keypress(function () {
+
+                if ($("#departmentCode").val().length > 2 && $("#departmentCode").val().length < 11) {
+                    $('#departmentCodeError').html("");
+                    $("#departmentName").change(function () {
+                        if ($("#departmentName").val().length > 3 && $("#departmentName").val().length < 21) {
+                            $('#departmentNameError').html("");
+                            $("#saveDepartmentButton").click(function () {
+                                var department = new Object();
+                                department.DepartmentCode = $("#departmentCode").val().trim();
+                                department.DepartmentName = $("#departmentName").val().trim();
+                                console.log(department.DepartmentCode);
+                                console.log(department.DepartmentName);
+
+                                $.ajax({
+                                    url: "/Department/CreateDepartment",
+                                    method: "POST",
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    data: JSON.stringify(department),
+                                    success: function (data) {
+                                        alert(data);
+                                    },
+                                    error: function () {
+                                        alert('failed');
+                                    }
+                                });
+
+                            });
+                        }
+                        else {
+                           $('#departmentNameError').html("Department Name shoulde be 4 to 14 character");
+                        }
+                    });
+                    
+
+                }
+                else {
+                    $('#departmentCodeError').html("Department code shoulde be 3 to 7 character");
+                }
+
+            });
+
+
+        });
+    </script>
+}
+@*<script src="~/Scripts/jquery-3.4.1.js"></script>*@

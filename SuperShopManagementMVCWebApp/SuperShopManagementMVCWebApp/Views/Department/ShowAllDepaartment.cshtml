@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SuperShopManagementMVCWebApp.Models.Department>
+
+@{
+    ViewBag.Title = "ShowAllDepaartment";
+}
+
+<h2>Department List</h2>
+
+
+@*@if(!Model.Any())
+{
+
+}*@
+<table id="Departments" class="table table-bordered table-hover"  >
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Department Code</th>
+            <th scope="col">Department Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var departments in Model)
+        {
+        <tr>
+            <th>@departments.DepartmentCode</th>
+            <th>@departments.DepartmentName</th>
+        </tr>
+        }
+    </tbody>
+
+
+</table>

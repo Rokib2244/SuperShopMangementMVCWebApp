@@ -1,0 +1,140 @@
+﻿@model SuperShopManagementMVCWebApp.Models.EmployeeRank
+
+@{
+    ViewBag.Title = "SaveEmployeeRank";
+}
+
+<h2>SaveEmployeeRank</h2>
+<!Doctype html>
+<html>
+<head>
+
+</head>
+<body>
+    <form class="validation" novalidate method="post">
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="rankName">Rank Name</label>
+                <div class="input-group">
+
+                    <input type="text" class="form-control" id="rankName" placeholder="Rank Name" required />
+                    <div class="valid-feedback">
+                        Looks Good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please Enter The Rank Name
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="salary">Salary</label>
+                <div class="input-group">
+
+                    <input type="text" class="form-control" id="salary" placeholder="Salary" required />
+                    <div class="valid-feedback">
+                        Looks Good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please Enter Salary
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <label for="commission">Commission</label>
+                <div class="input-group">
+
+                    <input type="text" class="form-control" id="commission" placeholder="Commission" required />
+                    <div class="valid-feedback">
+                        Looks Good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please Enter Commission
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" id="saveRank" type="submit">Save</button>
+    </form>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</body>
+</html>
+@section scripts{
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        if (form.checkValidity() === true) {
+                            //event.preventDefault();
+                            var employeeRank = new Object();
+                            employeeRank.RankName = $("#rankName").val().trim();
+                            console.log(employeeRank.RankName);
+                            employeeRank.Salary = $("#salary").val().trim();
+                            console.log(employeeRank.Salary);
+                            employeeRank.Commission = $("#commission").val().trim();
+                            console.log(employeeRank.Commission);
+
+                            $.ajax({
+                                url: "/Api/Employees/SaveEmployeeRank",
+                                //url: "/Employee/SaveEmployeeRank",
+                                method: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: JSON.stringify(employeeRank),
+                                success: function (data) {
+                                    alert(data);
+                                },
+                                error: function () {
+                                    alert('failed');
+                                }
+                            });
+
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    @*<script>
+        $(document).ready(function () {
+
+            $("#saveRank").click(function () {
+                var employeeRank = new Object();
+                employeeRank.RankName = $("#rankName").val().trim();
+                employeeRank.Salary = $("#salary").val().trim();
+                employeeRank.Commission = $("#commission").val().trim();
+
+                $.ajax({
+                    url: "/Api/Employees/SaveEmployeeRank",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(employeeRank),
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert('failed');
+                    }
+                });
+
+            });
+        });
+    </script>*@
+
+}
+
